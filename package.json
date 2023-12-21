@@ -6,18 +6,17 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist", 
+    "src"
   ],
   "scripts": {
-    "build": "tsup",
-    "postinstall": "tsup",
+    "build": "tsup src/index.ts",
+    "postinstall": "npm run build",
     "dev": "tsup --watch --onSuccess \"tsx dist/index.cjs\""
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.23.3",
-    "@types/node": "^20.10.5",
-    "tsup": "^8.0.1",
-    "typescript": "^5.3.3"
+    "@types/node": "^20.10.5"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +25,8 @@
     "@aws-sdk/cloudfront-signer": "^3.468.0",
     "@tus/file-store": "^1.1.0",
     "@tus/s3-store": "^1.2.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
   }
 }
