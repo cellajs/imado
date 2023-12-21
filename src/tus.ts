@@ -20,6 +20,7 @@ interface AWSCredentials {
 interface TusOptions {
   secret: string;
   credentials?: AWSCredentials;
+  serverOptions?: ServerOptions;
 }
 
 function hasCredentials(credentials?: AWSCredentials) {
@@ -78,6 +79,7 @@ function optionallyStoreInS3(options: WithOptional<ServerOptions, 'locker'> & { 
 
 export const tus = (opts: TusOptions) => {
   return new Server(optionallyStoreInS3({
+    ...opts.serverOptions,
     path: '/upload',
     datastore: new FileStore({
       directory: './files',
