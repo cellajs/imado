@@ -45,3 +45,69 @@ const signedThumbnailUrl = getImadoUrl.generate(thumbnailUrl, {
   format: "avif",
 });
 ```
+
+## What to do on your application
+
+### Backend
+
+- Create an endpoint with a JWT including a `public` boolean and `sub` in the payload. Recommended would also to define a `expiresIn` (exp). For example:
+
+```typescript
+const jwt = require("jsonwebtoken");
+
+async function getUploadToken(ctx) {
+  const isPublic = ctx.req.query("public");
+  const user = ctx.get("user");
+
+  const token = jwt.sign(
+    { sub: user.id, public: isPublic === "true" },
+    process.env.TUS_UPLOAD_API_SECRET
+  );
+
+  return ctx.json({
+    success: true,
+    data: token,
+  });
+}
+```
+
+### Frontend
+
+You would include something like [Uppy](https://uppy.io/) and uppy/tus.
+
+```typescript
+import Uppy from "@uppy/core";
+import Tus from "@uppy/tus";
+
+// Get the JWT from your server
+const { token } = await (await fetch("/api/upload/token?public=true")).json();
+
+// Convience method to read out JWT (base64) string
+const readJwt = (token: string) => JSON.parse(atob(token.split(".")[1]));
+
+// Read out JWT
+const { public: isPublic, sub } = readJwt(token);
+
+const uppy = new Uppy({
+  meta: {
+    public: isPublic,
+  },
+})
+  .use(Tus, {
+    endpoint: "http://localhost:1080", // endpoint for tus
+    removeFingerprintOnSuccess: true,
+    headers: {
+      authorization: `Bearer ${token}`, // pass the JWT to tus
+    },
+  })
+  .on("complete", (result) => {
+    if (result.successful) {
+      const urls = result.successful.map((file) => {
+        const uploadKey = file.uploadURL.split("/").pop();
+        return new URL(`https://path_to_your_cdn.com/${sub}/${uploadKey}`);
+      });
+
+      // Do something with the urls!
+    }
+  });
+```
