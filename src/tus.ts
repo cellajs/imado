@@ -10,6 +10,10 @@ type WithOptional<T, K extends keyof T> = Omit<T, K> & {
   [P in K]+?: T[P];
 };
 
+interface Interceptors {
+  onUploadFinishResponse?: (res: http.ServerResponse) => http.ServerResponse;
+}
+
 interface AWSCredentials {
   bucket?: string;
   region?: string;
@@ -21,6 +25,7 @@ interface TusOptions {
   secret: string;
   credentials?: AWSCredentials;
   serverOptions?: ServerOptions;
+  interceptors?: Interceptors;
 }
 
 function hasCredentials(credentials?: AWSCredentials) {
@@ -44,7 +49,7 @@ async function moveS3Object(oldKey: string, newKey: string, credentials?: AWSCre
   }
 }
 
-function optionallyStoreInS3(options: WithOptional<ServerOptions, 'locker'> & { datastore: FileStore }, credentials?: AWSCredentials) {
+function optionallyStoreInS3(options: WithOptional<ServerOptions, 'locker'> & { datastore: FileStore }, credentials?: AWSCredentials, interceptors?: Interceptors) {
   if (hasCredentials(credentials)) {
     return {
       ...options,
@@ -69,7 +74,9 @@ function optionallyStoreInS3(options: WithOptional<ServerOptions, 'locker'> & { 
         // also move the info file
         await moveS3Object(`${upload.id}.info`, `${sub}/${upload.id}.info`, credentials);
 
-        return res
+        // Let user intercept (modify) response
+        if (typeof interceptors?.onUploadFinishResponse === 'function') return interceptors?.onUploadFinishResponse(res);
+        return res;
       },
     }
   }
@@ -104,5 +111,5 @@ export const tus = (opts: TusOptions) => {
         throw { status_code: 401, body: 'Invalid token' };
       }
     },
-  }, opts.credentials));  
+  }, opts.credentials, opts.interceptors));  
 }
