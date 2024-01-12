@@ -1,7 +1,10 @@
 {
   "name": "imado",
-  "version": "1.0.0",
-  "description": "imado package",
+  "version": "0.0.0",
+  "repository": "https://github.com/cellajs/imado",
+  "description": "File handling with TUS for public and private files using AWS Lambda and S3.",
+  "author": "Shareworks Solutions BV <info@shareworks.nl>",
+  "homepage": "https://imado.eu",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -18,8 +21,7 @@
     "@babel/preset-typescript": "^7.23.3",
     "@types/node": "^20.10.5"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.477.0",
     "@aws-sdk/cloudfront-signer": "^3.468.0",
