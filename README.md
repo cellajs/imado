@@ -1,4 +1,9 @@
 # Imado
+Imado is built as a configure-once solution for file handling with the TUS protocol. It supports images, files and optionally videos and runs on AWS Lambda. [Contact us](https://cellajs.com/contact) if you are interested in using it.
+
+The plan
+
+**Pre-release. Not production-ready. Use at your own risk!**
 
 ## Server
 
