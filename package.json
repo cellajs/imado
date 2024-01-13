@@ -1,15 +1,26 @@
 {
-  "name": "imado",
+  "name": "@cellajs/imado",
   "version": "0.0.0",
-  "repository": "https://github.com/cellajs/imado",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cellajs/imado.git"
+  },
   "description": "File handling with TUS for public and private files using AWS Lambda and S3.",
   "author": "Shareworks Solutions BV <info@shareworks.nl>",
   "homepage": "https://imado.eu",
+  "keywords": [
+    "file handling",
+    "tus",
+    "aws",
+    "s3",
+    "lambda",
+    "typescript"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist", 
+    "dist",
     "src"
   ],
   "scripts": {
@@ -30,5 +41,8 @@
     "jsonwebtoken": "^9.0.2",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
+  },
+  "bugs": {
+    "url": "https://github.com/cellajs/imado/issues"
   }
 }
