@@ -10,6 +10,8 @@ type WithOptional<T, K extends keyof T> = Omit<T, K> & {
   [P in K]+?: T[P];
 };
 
+type ModifiedServerOptions = Omit<ServerOptions, 'locker' | 'path'>;
+
 interface AWSCredentials {
   bucket?: string;
   region?: string;
@@ -20,8 +22,9 @@ interface AWSCredentials {
 interface TusOptions {
   secret: string;
   credentials?: AWSCredentials;
-  serverOptions?: ServerOptions;
+  serverOptions?: ModifiedServerOptions;
 }
+
 
 function hasCredentials(credentials?: AWSCredentials) {
   return credentials?.bucket && credentials?.region && credentials?.accessKeyId && credentials?.secretAccessKey;
@@ -78,14 +81,10 @@ function optionallyStoreInS3(options: WithOptional<ServerOptions, 'locker'> & { 
 }
 
 export const tus = (opts: TusOptions) => {
-  // If you change serverOptions,  you need to include a new MemoryLocker
-  if (opts.serverOptions && !opts.serverOptions.locker) {
-    opts.serverOptions.locker = new MemoryLocker();
-  };
-
   return new Server(optionallyStoreInS3({
     ...opts.serverOptions,
     path: '/upload',
+    locker: new MemoryLocker(),
     datastore: new FileStore({
       directory: './files',
     }),
