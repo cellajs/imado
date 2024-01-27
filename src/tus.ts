@@ -1,6 +1,6 @@
 import { FileStore } from '@tus/file-store';
 import { S3Store } from '@tus/s3-store';
-import { Server, ServerOptions, Upload } from '@tus/server';
+import { Server, ServerOptions, Upload, MemoryLocker } from '@tus/server';
 import { S3Client, CopyObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 
 import type http from 'node:http';
@@ -78,6 +78,11 @@ function optionallyStoreInS3(options: WithOptional<ServerOptions, 'locker'> & { 
 }
 
 export const tus = (opts: TusOptions) => {
+  // If you change serverOptions,  you need to include a new MemoryLocker
+  if (opts.serverOptions && !opts.serverOptions.locker) {
+    opts.serverOptions.locker = new MemoryLocker();
+  };
+
   return new Server(optionallyStoreInS3({
     ...opts.serverOptions,
     path: '/upload',
