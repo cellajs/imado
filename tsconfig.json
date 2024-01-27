@@ -1,5 +1,4 @@
 {
-  "strict": true,
   "compilerOptions": {
     "moduleResolution": "nodenext",
     "module": "NodeNext"
