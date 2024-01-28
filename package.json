@@ -1,12 +1,12 @@
 {
   "name": "@cellajs/imado",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cellajs/imado.git"
   },
   "description": "File handling with TUS for public and private files using AWS Lambda and S3.",
-  "author": "Shareworks Solutions BV <info@shareworks.nl>",
+  "author": "CellaJS <info@cellajs.com>",
   "homepage": "https://imado.eu",
   "keywords": [
     "file handling",
@@ -25,11 +25,15 @@
   ],
   "scripts": {
     "build": "tsup src/index.ts",
-    "postinstall": "npm run build",
-    "dev": "tsup --watch --onSuccess \"tsx dist/index.cjs\""
+    "postinstall": "lefthook install && npm run build",
+    "dev": "tsup --watch --onSuccess \"tsx dist/index.cjs\"",
+    "check": "npx @biomejs/biome check .",
+    "check:fix": "npx @biomejs/biome check --apply ."
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.23.3",
+    "@biomejs/biome": "1.5.3",
+    "@evilmartians/lefthook": "^1.6.0",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.11.8"
   },
   "license": "UNLICENSED",

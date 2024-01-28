@@ -1,9 +1,9 @@
 # Imado (+ TUS + AWS Lambda + S3)
-Imado is built as a configure-once solution for file handling with the TUS protocol, for public as well as for private files. It supports images and files such as PDF and DOCX and runs on AWS Lambda. Data - including cache - is stored on your own S3 bucket.
+Imado is built as a configure-once solution for file handling with the TUS protocol, for public as well as for private files. It supports images and files such as PDF and DOCX and runs on AWS Lambda. Data - including cache - is stored on your own S3 bucket. Optionally it also supports videos.
 
-[Contact us](https://cellajs.com/contact) if you are interested in using it.
+This repo is a helper to use Imado and is currently being used by [CellaJS](https://github.com/cellajs/cella). The required AWS lambda repo is currently private.
 
-**Pre-release. Not production-ready.**
+[Contact us here](https://cellajs.com/contact) if you are interested in using it or email us at <info@cellajs.com>.
 
 ## Server
 
