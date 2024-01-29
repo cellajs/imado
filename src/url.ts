@@ -8,9 +8,9 @@ export type ImadoUrlParams = {
 };
 
 interface ImadoUrlConfig {
-  signUrl?: string;
-  cloudfrontKeyId?: string;
-  cloudfrontPrivateKey?: string;
+  signUrl: string;
+  cloudfrontKeyId: string;
+  cloudfrontPrivateKey: string;
 }
 
 export class ImadoUrl {
@@ -20,8 +20,9 @@ export class ImadoUrl {
     this.config = config;
   }
 
-  generate(path?: string | null, params?: ImadoUrlParams) {
+  generate(path: string | null, params?: ImadoUrlParams) {
     if (!path) return path;
+
     const url = new URL(path);
 
     if (params) {

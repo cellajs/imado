@@ -6,10 +6,6 @@ import { MemoryLocker, Server, ServerOptions, Upload } from '@tus/server';
 import type http from 'node:http';
 import jwt from 'jsonwebtoken';
 
-type WithOptional<T, K extends keyof T> = Omit<T, K> & {
-  [P in K]+?: T[P];
-};
-
 type ModifiedServerOptions = Omit<ServerOptions, 'locker' | 'path'>;
 
 interface AWSCredentials {
@@ -50,7 +46,7 @@ async function moveS3Object(oldKey: string, newKey: string, credentials: AWSCred
   );
 }
 
-function optionallyStoreInS3(options: WithOptional<ServerOptions, 'locker'> & { datastore: FileStore }, credentials: AWSCredentials) {
+function optionallyStoreInS3(options: ServerOptions & { datastore: FileStore }, credentials: AWSCredentials) {
   return {
     ...options,
     datastore: new S3Store({
