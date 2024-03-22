@@ -1,5 +1,6 @@
 /node_modules
 /.idea
+.vscode
 
 # Ignore test-related files
 /coverage.data
