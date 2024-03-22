@@ -1,10 +1,19 @@
-/node_modules
-/.idea
+# Distribution
+dist
+out
+build
+node_modules
+
+# Logs
+*.log*
+logs
+
+# Environment
+*.env*
+
+# Misc
+.DS_Store
+
+# IDEA config files
+.idea
 .vscode
-
-# Ignore test-related files
-/coverage.data
-/coverage/
-
-# Build files
-/dist
