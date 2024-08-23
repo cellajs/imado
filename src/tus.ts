@@ -1,7 +1,7 @@
 import { CopyObjectCommand, DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { FileStore } from '@tus/file-store';
 import { S3Store } from '@tus/s3-store';
-import { MemoryLocker, Server, ServerOptions, Upload } from '@tus/server';
+import { MemoryLocker, Server, type ServerOptions, type Upload } from '@tus/server';
 
 import type http from 'node:http';
 import jwt from 'jsonwebtoken';
