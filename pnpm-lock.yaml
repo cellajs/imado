@@ -20,6 +20,9 @@ importers:
       '@tus/s3-store':
         specifier: ^1.5.0
         version: 1.5.0
+      '@tus/server':
+        specifier: ^1.9.0
+        version: 1.9.0
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
@@ -411,7 +414,6 @@ packages:
 
   '@evilmartians/lefthook@1.7.14':
     resolution: {integrity: sha512-0FPRdmd7hIZXjTQKQjLnmqxx4xGRIM1oGN9pJ4PyI14tOqEAwstmLIbauqQpTVTj3MAPeylsQVXh9RGaq/F2/A==}
-    cpu: [x64, arm64, ia32]
     os: [darwin, linux, win32]
     hasBin: true
 
@@ -752,8 +754,16 @@ packages:
     resolution: {integrity: sha512-YpSL+lZ908mIFdVYME9V0oG46kJFB70CRMkBu0vGckL/7C+YXxfSdBxxfd8nc9TPgGp2hABz8LpTH6fcwoy+QQ==}
     engines: {node: '>=16'}
 
+  '@tus/server@1.9.0':
+    resolution: {integrity: sha512-4eSEKqTjndVRq3is1r99ubN37BaI+u/76Xkcw19joh35yf/pGfOg4rv8QjGmTZgTyzFJvT5P/ny9hYD4ILJL2Q==}
+    engines: {node: '>=16'}
+
   '@tus/utils@0.3.0':
     resolution: {integrity: sha512-Wt/phitrYEP6T9Tq0ikhJdGKpeEEkOT+vEVUKQKBXBUZdtWubLQKvR2V9jtzekFhLIoqm0KS5uOb7abZgebT3A==}
+    engines: {node: '>=16'}
+
+  '@tus/utils@0.4.0':
+    resolution: {integrity: sha512-Lc+t/D4IyB/iV70DNALN851yPcqP/FYp1prA3jQHM2vn0OicA7qpFjMaM+1/XRDkeF2b75gDGHRfw8S4sVjs8g==}
     engines: {node: '>=16'}
 
   '@types/estree@1.0.5':
@@ -1016,6 +1026,9 @@ packages:
 
   lodash.sortby@4.7.0:
     resolution: {integrity: sha512-HDWXG8isMntAyRF5vZ7xKuEvOhT4AhlRt/3czTSjvGUxjYCBVRQY48ViDHyfYz9VIoBkW4TMGQNapx+l3RUwdA==}
+
+  lodash.throttle@4.1.1:
+    resolution: {integrity: sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==}
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
@@ -2351,7 +2364,19 @@ snapshots:
       - aws-crt
       - supports-color
 
+  '@tus/server@1.9.0':
+    dependencies:
+      '@tus/utils': 0.4.0
+      debug: 4.3.6
+      lodash.throttle: 4.1.1
+    optionalDependencies:
+      '@redis/client': 1.6.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@tus/utils@0.3.0': {}
+
+  '@tus/utils@0.4.0': {}
 
   '@types/estree@1.0.5': {}
 
@@ -2625,6 +2650,8 @@ snapshots:
   lodash.once@4.1.1: {}
 
   lodash.sortby@4.7.0: {}
+
+  lodash.throttle@4.1.1: {}
 
   lru-cache@10.4.3: {}
 

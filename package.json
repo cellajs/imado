@@ -31,6 +31,7 @@
     "@aws-sdk/cloudfront-signer": "^3.621.0",
     "@tus/file-store": "^1.4.0",
     "@tus/s3-store": "^1.5.0",
+    "@tus/server": "^1.9.0",
     "jsonwebtoken": "^9.0.2",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4"

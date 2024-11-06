@@ -21,7 +21,7 @@ interface TusOptions {
   serverOptions?: ModifiedServerOptions;
 }
 
-async function moveS3Object(oldKey: string, newKey: string, credentials: AWSCredentials) {
+async function moveS3Object(oldKey: string, newKey: string, credentials: AWSCredentials, mimeType: string) {
   const s3Client = new S3Client({
     region: credentials.region,
     credentials: {
@@ -35,6 +35,7 @@ async function moveS3Object(oldKey: string, newKey: string, credentials: AWSCred
       Bucket: credentials.bucket,
       CopySource: `${credentials.bucket}/${oldKey}`,
       Key: newKey,
+      ContentType: mimeType,
     }),
   );
 
@@ -65,10 +66,14 @@ function optionallyStoreInS3(options: ServerOptions & { datastore: FileStore }, 
       const token = (auth as string).split(' ')[1];
       const sub = jwt.decode(token)?.sub;
 
+      // Get the MIME type
+      let mimeType = 'application/octet-stream';
+      if (upload.metadata?.fileType) mimeType = upload.metadata.fileType;
+
       // sub in JWT is used as path in S3 (e.g. user id, or w/ organization id)
-      await moveS3Object(upload.id, `${sub}/${upload.id}`, credentials);
+      await moveS3Object(upload.id, `${sub}/${upload.id}`, credentials, mimeType);
       // also move the info file
-      await moveS3Object(`${upload.id}.info`, `${sub}/${upload.id}.info`, credentials);
+      await moveS3Object(`${upload.id}.info`, `${sub}/${upload.id}.info`, credentials, mimeType);
 
       return res;
     },
