@@ -21,7 +21,7 @@ interface TusOptions {
   serverOptions?: ModifiedServerOptions;
 }
 
-async function moveS3Object(oldKey: string, newKey: string, credentials: AWSCredentials, mimeType: string) {
+async function moveS3Object(oldKey: string, newKey: string, credentials: AWSCredentials, mimeType: string | null | undefined) {
   const s3Client = new S3Client({
     region: credentials.region,
     credentials: {
@@ -35,7 +35,7 @@ async function moveS3Object(oldKey: string, newKey: string, credentials: AWSCred
       Bucket: credentials.bucket,
       CopySource: `${credentials.bucket}/${oldKey}`,
       Key: newKey,
-      ContentType: mimeType,
+      ContentType: mimeType || 'application/octet-stream',
     }),
   );
 
@@ -66,19 +66,19 @@ function optionallyStoreInS3(options: ServerOptions & { datastore: FileStore }, 
       const token = (auth as string).split(' ')[1];
       const sub = jwt.decode(token)?.sub;
 
-      // Get the MIME type
-      let mimeType = 'application/octet-stream';
-      console.log('dfdfgf', upload);
-      if (upload.metadata?.fileType) mimeType = upload.metadata.fileType;
-
       // sub in JWT is used as path in S3 (e.g. user id, or w/ organization id)
-      await moveS3Object(upload.id, `${sub}/${upload.id}`, credentials, mimeType);
+      await moveS3Object(upload.id, `${sub}/${upload.id}`, credentials, upload.metadata?.contentType);
       // also move the info file
-      await moveS3Object(`${upload.id}.info`, `${sub}/${upload.id}.info`, credentials, mimeType);
+      await moveS3Object(`${upload.id}.info`, `${sub}/${upload.id}.info`, credentials, upload.metadata?.contentType);
 
       return res;
     },
   };
+}
+
+function extractContentType(upload: Upload) {
+  const mimeType = upload.metadata?.fileType || upload.metadata?.contentType;
+  return mimeType;
 }
 
 export const tus = (opts: TusOptions) => {
@@ -91,6 +91,11 @@ export const tus = (opts: TusOptions) => {
         datastore: new FileStore({
           directory: './files',
         }),
+        async onUploadCreate(_, res, upload) {
+          const contentType = extractContentType(upload) ?? null;
+          const metadata = { ...upload.metadata, contentType };
+          return { res, metadata };
+        },
         async onIncomingRequest(req: http.IncomingMessage, _res: http.ServerResponse) {
           const auth = req.headers.authorization;
 
