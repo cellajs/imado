@@ -68,6 +68,7 @@ function optionallyStoreInS3(options: ServerOptions & { datastore: FileStore }, 
 
       // Get the MIME type
       let mimeType = 'application/octet-stream';
+      console.log('dfdfgf', upload);
       if (upload.metadata?.fileType) mimeType = upload.metadata.fileType;
 
       // sub in JWT is used as path in S3 (e.g. user id, or w/ organization id)
